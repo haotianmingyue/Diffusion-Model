@@ -137,6 +137,8 @@ class ResidualBlock(nn.Module):
         self.attention = nn.Identity() if not use_attention else AttentionBlock(out_channels, norm, num_groups)
 
     def forward(self, x, time_emb=None, y=None):
+        # 这里time_emb 只在第一个卷积后加入
+
         out = self.activation(self.norm_1(x))
         # 第一个卷积
         out = self.conv_1(out)
@@ -145,7 +147,7 @@ class ResidualBlock(nn.Module):
         if self.time_bias is not None:
             if time_emb is None:
                 raise ValueError("time conditioning was specified but time_emb is not passed")
-            out += self.time_bias(self.activation(time_emb))[:, :, None, None]
+            out += self.time_bias(self.activation(time_emb))[:, :, None, None]  # 直接新加了两个两个维度，让数字到了最后一维，然后让每个输出通道加上一个值
 
         # 对种类y_emb做一个全连接，施加在通道上
         if self.class_bias is not None:
@@ -199,8 +201,8 @@ class UNet(nn.Module):
         # now_channels是一个中间变量，代表中间的通道数
         channels = [base_channels]
         now_channels = base_channels
-        for i, mult in enumerate(channel_mults):
-            out_channels = base_channels * mult
+        for i, mult in enumerate(channel_mults):   # 通道缩放倍数
+            out_channels = base_channels * mult  # 输出通道数
             for _ in range(num_res_blocks):
                 self.downs.append(
                     ResidualBlock(
@@ -299,8 +301,8 @@ class UNet(nn.Module):
 
 
 if __name__ == '__main__':
-    data = torch.rand(3, 28, 28)
-    # print(data.shape)
+
+    # 模型需要设定输入通道数， 输入一个batch的图片和一个batch的t 输出和输入图片相同大小的tensor
     model = UNet(3)
 
     # from torchinfo import summary
