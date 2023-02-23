@@ -115,6 +115,8 @@ class GaussianDiffusion(nn.Module):
             if t > 0:
                 x += extract(self.sigma, t_batch, x.shape) * torch.randn_like(x)
 
+            print(f'now t :{t}')
+
         return x.cpu().detach()
 
     @torch.no_grad()
