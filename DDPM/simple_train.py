@@ -36,7 +36,7 @@ if __name__ == '__main__':
     img_channel = 1
 
     Init_Epoch = 0
-    Epoch = 200
+    Epoch = 500
     batch_size = 1
 
     Init_lr = 2e-4
@@ -141,11 +141,11 @@ if __name__ == '__main__':
 
             if (epoch + 1) % save_period == 0:
                 torch.save(diffusion_model_train.state_dict(), os.path.join(save_dir, f'Diffusion_Epoch{epoch}-loss{total_loss}.pth'))
-                fig, ax = plt.subplots()
-                # x = torch.randn((1, 1, 256, 256), dtype=torch.float)
-                y = diffusion_model.sample(1, 'cuda', use_ema=None)
-                ax.imshow(y[0][0])
-                plt.show()
+                # fig, ax = plt.subplots()
+                # # x = torch.randn((1, 1, 256, 256), dtype=torch.float)
+                # y = diffusion_model.sample(1, 'cuda', use_ema=None)
+                # ax.imshow(y[0][0])
+                # plt.show()
             total_loss = 0
 
 

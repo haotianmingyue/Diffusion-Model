@@ -8,7 +8,7 @@ from DDPM.nets.UNet import UNet
 from DDPM.nets.diffusion import GaussianDiffusion, generate_linear_schedule, generate_cosine_schedule
 
 Cuda = True
-diffusion_model_path = './DDPM/model_data/Diffusion_Epoch199-loss0.01622556336224079.pth'
+diffusion_model_path = './DDPM/model_data/Diffusion_Epoch499-loss0.016628040000796318.pth'
 channel = 32
 schedule = 'linear'
 num_timesteps = 1000
@@ -37,6 +37,7 @@ fig, ax = plt.subplots()
 
 y = net.sample(1, 'cuda', use_ema=None)
 
+print(y.shape)
 ax.imshow(y[0][0])
 
 plt.show()
